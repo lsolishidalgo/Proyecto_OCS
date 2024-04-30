@@ -1,0 +1,912 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Proyecto_OCS_IngSoftware.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="T_MENU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TITULO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PRECIO" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ESTADO" Type="nvarchar" MaxLength="20" />
+          <Property Name="FECHA_CREACION" Type="datetime" />
+          <Property Name="USUARIOREGISTRA" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="T_MESAS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroMesa" Type="int" Nullable="false" />
+          <Property Name="CantidadMaximaPersonas" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="T_ORDENES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NUM_MESA" Type="int" Nullable="false" />
+          <Property Name="FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="ID_MESERO" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CLIENTE_NOMBRE" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ESTADO" Type="char" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_ORDENES_PLATOS">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ID_ORDEN" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_ORDEN" Type="int" Nullable="false" />
+          <Property Name="ID_PLATO" Type="int" Nullable="false" />
+          <Property Name="FECHA_CREACION" Type="datetime" Nullable="false" />
+          <Property Name="OBSERVACIONES" Type="varchar" MaxLength="1000" />
+          <Property Name="CANTIDAD" Type="float" Nullable="false" />
+          <Property Name="PRECIO_UNI" Type="float" Nullable="false" />
+          <Property Name="PRECIO" Type="float" Nullable="false" />
+          <Property Name="ESTADO" Type="char" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Proyecto_OCS_IngSoftware.dbo.T_TEMP_ORDENES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="T_TEMP_ORDENES">
+          <Key>
+            <PropertyRef Name="NUM_MESA" />
+            <PropertyRef Name="ID_PLATO" />
+            <PropertyRef Name="CANTIDAD" />
+          </Key>
+          <Property Name="NUM_MESA" Type="int" Nullable="false" />
+          <Property Name="ID_PLATO" Type="int" Nullable="false" />
+          <Property Name="observaciones" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CANTIDAD" Type="int" Nullable="false" />
+          <Property Name="ID_MESERO" Type="varchar" MaxLength="20" />
+          <Property Name="CLIENTE_NOMBRE" Type="varchar" MaxLength="200" />
+          <Property Name="ESTADO" Type="char" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="T_USUARIOS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Identificacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Celular" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Rol" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="20" />
+          <Property Name="FechaRegistro" Type="datetime" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <Association Name="FK01_T_ORDENES_PLATOS__T_MENU">
+          <End Role="T_MENU" Type="Self.T_MENU" Multiplicity="1" />
+          <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_MENU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_PLATO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK01_T_ORDENES_PLATOS__T_ORDENES">
+          <End Role="T_ORDENES" Type="Self.T_ORDENES" Multiplicity="1" />
+          <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_ORDENES">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_ORDEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_ActualizaOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AnularOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idOrden" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AnularRegOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idOrden" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaIDMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaIdOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaIDPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombrePlato" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_consultaMesaPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idMesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaMesas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ConsultaMesasConOrdenes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ConsultaMesasHabilitadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ConsultaPlatillosDeOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="num_mesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaPlatosTemporalesMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultaPorIdentificacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="identificacion_persona" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultarPlatoPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPlato" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ConsultarPlatos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ConsultarPlatosHabilitados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_CrearMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="num_mesa" Type="int" Mode="In" />
+          <Parameter Name="Ln_cantidad_personas" Type="int" Mode="In" />
+          <Parameter Name="Lv_id_user" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_EliminarRegOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReg" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_EliminarRegTemp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_FinalizarOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_orden" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GenerarNuevoPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="length" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertaOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idOrden" Type="int" Mode="In" />
+          <Parameter Name="idPlato" Type="int" Mode="In" />
+          <Parameter Name="observaciones" Type="nvarchar" Mode="In" />
+          <Parameter Name="cant" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertaRegistroTemporal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="num_mesa" Type="int" Mode="In" />
+          <Parameter Name="id_plato" Type="int" Mode="In" />
+          <Parameter Name="observaciones" Type="nvarchar" Mode="In" />
+          <Parameter Name="cant" Type="int" Mode="In" />
+          <Parameter Name="id_mesero" Type="nvarchar" Mode="In" />
+          <Parameter Name="cliente" Type="nvarchar" Mode="In" />
+          <Parameter Name="estado" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertarOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+          <Parameter Name="mesero" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertarPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="precio" Type="decimal" Mode="In" />
+          <Parameter Name="usuario_registra" Type="varchar" Mode="In" />
+          <Parameter Name="fechahoraregistro" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="sp_InsertarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="celular" Type="nvarchar" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="perfil" Type="nvarchar" Mode="In" />
+          <Parameter Name="usuario_registra" Type="nvarchar" Mode="In" />
+          <Parameter Name="fechahoraregistro" Type="datetime" Mode="In" />
+          <Parameter Name="length" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ListadoComanda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_ModificarEstadoMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idMesa" Type="int" Mode="In" />
+          <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ModificarEstadoPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPlato" Type="int" Mode="In" />
+          <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ModificarEstadoUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ModificarPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_plato" Type="int" Mode="In" />
+          <Parameter Name="descripcion" Type="nvarchar" Mode="In" />
+          <Parameter Name="precio" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="sp_TotalesLineas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_orden" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_TotalFactura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_orden" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ValidaEstadoPlatosOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="numMesa" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Proyecto_OCS_IngSoftwareStoreContainer">
+          <EntitySet Name="T_MENU" EntityType="Self.T_MENU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_MESAS" EntityType="Self.T_MESAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ORDENES" EntityType="Self.T_ORDENES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ORDENES_PLATOS" EntityType="Self.T_ORDENES_PLATOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_USUARIOS" EntityType="Self.T_USUARIOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_TEMP_ORDENES" EntityType="Self.T_TEMP_ORDENES" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [T_TEMP_ORDENES].[NUM_MESA] AS [NUM_MESA], 
+    [T_TEMP_ORDENES].[ID_PLATO] AS [ID_PLATO], 
+    [T_TEMP_ORDENES].[observaciones] AS [observaciones], 
+    [T_TEMP_ORDENES].[CANTIDAD] AS [CANTIDAD], 
+    [T_TEMP_ORDENES].[ID_MESERO] AS [ID_MESERO], 
+    [T_TEMP_ORDENES].[CLIENTE_NOMBRE] AS [CLIENTE_NOMBRE], 
+    [T_TEMP_ORDENES].[ESTADO] AS [ESTADO]
+    FROM [dbo].[T_TEMP_ORDENES] AS [T_TEMP_ORDENES]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_MENU" Association="Self.FK01_T_ORDENES_PLATOS__T_MENU">
+            <End Role="T_MENU" EntitySet="T_MENU" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_ORDENES" Association="Self.FK01_T_ORDENES_PLATOS__T_ORDENES">
+            <End Role="T_ORDENES" EntitySet="T_ORDENES" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Proyecto_OCS_IngSoftware" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="T_MENU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PRECIO" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ESTADO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FECHA_CREACION" Type="DateTime" Precision="3" />
+          <Property Name="USUARIOREGISTRA" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="T_ORDENES_PLATOS" Relationship="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_MENU" FromRole="T_MENU" ToRole="T_ORDENES_PLATOS" />
+        </EntityType>
+        <EntityType Name="T_MESAS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroMesa" Type="Int32" Nullable="false" />
+          <Property Name="CantidadMaximaPersonas" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="T_ORDENES_PLATOS" Relationship="Self.FK02_T_ORDENES_PLATOS__T_MESAS" FromRole="T_MESAS" ToRole="T_ORDENES_PLATOS" />
+        </EntityType>
+        <EntityType Name="T_ORDENES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NUM_MESA" Type="Int32" Nullable="false" />
+          <Property Name="FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_MESERO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CLIENTE_NOMBRE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ESTADO" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_ORDENES_PLATOS" Relationship="Self.FK01_T_ORDENES_PLATOS__T_ORDENES" FromRole="T_ORDENES" ToRole="T_ORDENES_PLATOS" />
+        </EntityType>
+        <EntityType Name="T_ORDENES_PLATOS">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ID_ORDEN" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_ORDEN" Type="Int32" Nullable="false" />
+          <Property Name="ID_PLATO" Type="Int32" Nullable="false" />
+          <Property Name="FECHA_CREACION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OBSERVACIONES" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="CANTIDAD" Type="Double" Nullable="false" />
+          <Property Name="PRECIO_UNI" Type="Double" Nullable="false" />
+          <Property Name="PRECIO" Type="Double" Nullable="false" />
+          <Property Name="ESTADO" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_MESAS" Relationship="Self.FK02_T_ORDENES_PLATOS__T_MESAS" FromRole="T_ORDENES_PLATOS" ToRole="T_MESAS" />
+          <NavigationProperty Name="T_ORDENES" Relationship="Self.FK01_T_ORDENES_PLATOS__T_ORDENES" FromRole="T_ORDENES_PLATOS" ToRole="T_ORDENES" />
+          <NavigationProperty Name="T_USUARIOS" Relationship="Self.FK01_T_ORDENES_PLATOS__T_MESEROS" FromRole="T_ORDENES_PLATOS" ToRole="T_USUARIOS" />
+          <NavigationProperty Name="T_MENU" Relationship="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_MENU" FromRole="T_ORDENES_PLATOS" ToRole="T_MENU" />
+        </EntityType>
+        <EntityType Name="T_USUARIOS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Celular" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rol" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_ORDENES_PLATOS" Relationship="Self.FK01_T_ORDENES_PLATOS__T_MESEROS" FromRole="T_USUARIOS" ToRole="T_ORDENES_PLATOS" />
+        </EntityType>
+        <Association Name="FK02_T_ORDENES_PLATOS__T_MESAS">
+          <End Role="T_MESAS" Type="Self.T_MESAS" Multiplicity="1" />
+          <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_MESAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_PLATO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK01_T_ORDENES_PLATOS__T_ORDENES">
+          <End Role="T_ORDENES" Type="Self.T_ORDENES" Multiplicity="1" />
+          <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_ORDENES">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_ORDEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK01_T_ORDENES_PLATOS__T_MESEROS">
+          <End Role="T_USUARIOS" Type="Self.T_USUARIOS" Multiplicity="1" />
+          <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_USUARIOS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_PLATO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Proyecto_OCS_IngSoftwareEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="T_MENU" EntityType="Self.T_MENU" />
+          <EntitySet Name="T_MESAS" EntityType="Self.T_MESAS" />
+          <EntitySet Name="T_ORDENES" EntityType="Self.T_ORDENES" />
+          <EntitySet Name="T_ORDENES_PLATOS" EntityType="Self.T_ORDENES_PLATOS" />
+          <EntitySet Name="T_USUARIOS" EntityType="Self.T_USUARIOS" />
+          <AssociationSet Name="FK02_T_ORDENES_PLATOS__T_MESAS" Association="Self.FK02_T_ORDENES_PLATOS__T_MESAS">
+            <End Role="T_MESAS" EntitySet="T_MESAS" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_ORDENES" Association="Self.FK01_T_ORDENES_PLATOS__T_ORDENES">
+            <End Role="T_ORDENES" EntitySet="T_ORDENES" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_MESEROS" Association="Self.FK01_T_ORDENES_PLATOS__T_MESEROS">
+            <End Role="T_USUARIOS" EntitySet="T_USUARIOS" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+          <FunctionImport Name="sp_ConsultaPorIdentificacion" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaPorIdentificacion_Result)">
+          <Parameter Name="identificacion_persona" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GenerarNuevoPassword">
+            <Parameter Name="identificacion" Mode="In" Type="String" />
+            <Parameter Name="length" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_InsertarPlato">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="precio" Mode="In" Type="Decimal" />
+            <Parameter Name="usuario_registra" Mode="In" Type="String" />
+            <Parameter Name="fechahoraregistro" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_InsertarUsuario">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="identificacion" Mode="In" Type="String" />
+            <Parameter Name="celular" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="perfil" Mode="In" Type="String" />
+            <Parameter Name="usuario_registra" Mode="In" Type="String" />
+            <Parameter Name="fechahoraregistro" Mode="In" Type="DateTime" />
+            <Parameter Name="length" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ModificarEstadoUsuario">
+            <Parameter Name="identificacion" Mode="In" Type="String" />
+            <Parameter Name="estado_actual" Mode="In" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_MENU" Association="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_MENU">
+            <End Role="T_MENU" EntitySet="T_MENU" />
+            <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+          </AssociationSet>
+          <FunctionImport Name="sp_ConsultarPlatoPorID" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultarPlatoPorID_Result)">
+          <Parameter Name="idPlato" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultarPlatos" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultarPlatos_Result)" />
+          <FunctionImport Name="sp_ModificarPlato">
+            <Parameter Name="id_plato" Mode="In" Type="Int32" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="precio" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ModificarEstadoPlato">
+            <Parameter Name="idPlato" Mode="In" Type="Int32" />
+            <Parameter Name="estado_actual" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_CrearMesa">
+            <Parameter Name="num_mesa" Mode="In" Type="Int32" />
+            <Parameter Name="Ln_cantidad_personas" Mode="In" Type="Int32" />
+            <Parameter Name="Lv_id_user" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaMesas" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaMesas_Result)" />
+          <FunctionImport Name="sp_ModificarEstadoMesa">
+            <Parameter Name="idMesa" Mode="In" Type="Int32" />
+            <Parameter Name="estado_actual" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_consultaMesaPorID" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_consultaMesaPorID_Result)">
+          <Parameter Name="idMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ListadoPlatillosPendientes" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ListadoPlatillosPendientes_Result)" />
+          <FunctionImport Name="sp_ActualizaOrdenPlato">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ListadodePlatillosPendientes" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ListadodePlatillosPendientes_Result)" />
+          <FunctionImport Name="sp_ConsultaMesasHabilitadas" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaMesasHabilitadas_Result)" />
+          <FunctionImport Name="sp_ConsultarPlatosHabilitados" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultarPlatosHabilitados_Result)" />
+          <EntitySet Name="T_TEMP_ORDENES" EntityType="Proyecto_OCS_IngSoftware.T_TEMP_ORDENES" />
+          <FunctionImport Name="sp_InsertaRegistroTemporal">
+            <Parameter Name="num_mesa" Mode="In" Type="Int32" />
+            <Parameter Name="id_plato" Mode="In" Type="Int32" />
+            <Parameter Name="observaciones" Mode="In" Type="String" />
+            <Parameter Name="cant" Mode="In" Type="Int32" />
+            <Parameter Name="id_mesero" Mode="In" Type="String" />
+            <Parameter Name="cliente" Mode="In" Type="String" />
+            <Parameter Name="estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaIDMesa" ReturnType="Collection(Int32)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaIDPlato" ReturnType="Collection(Int32)">
+          <Parameter Name="nombrePlato" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarRegTemp">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_PlatosTemporalesPorMesa" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_PlatosTemporalesPorMesa_Result)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaPlatosTempPorMesa" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaPlatosTempPorMesa_Result)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_InsertarOrden">
+            <Parameter Name="numMesa" Mode="In" Type="Int32" />
+            <Parameter Name="mesero" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaIdOrden" ReturnType="Collection(Int32)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_InsertaOrdenPlato">
+            <Parameter Name="idOrden" Mode="In" Type="Int32" />
+            <Parameter Name="idPlato" Mode="In" Type="Int32" />
+            <Parameter Name="observaciones" Mode="In" Type="String" />
+            <Parameter Name="cant" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaPlatosTemporalesMesa" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaPlatosTemporalesMesa_Result)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ListadoComanda" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ListadoComanda_Result)" />
+          <FunctionImport Name="sp_ConsultaMesasConOrdenes" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaMesasConOrdenes_Result)" />
+          <FunctionImport Name="sp_ConsultaPlatillosOrden" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaPlatillosOrden_Result)">
+          <Parameter Name="num_mesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ConsultaPlatillosDeOrden" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ConsultaPlatillosDeOrden_Result)">
+          <Parameter Name="num_mesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EliminarRegOrdenPlato">
+          <Parameter Name="idReg" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ValidaEstadoPlatosOrden" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_ValidaEstadoPlatosOrden_Result)">
+          <Parameter Name="numMesa" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AnularRegOrdenPlato">
+          <Parameter Name="idOrden" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TotalesLineas" ReturnType="Collection(Proyecto_OCS_IngSoftware.sp_TotalesLineas_Result)">
+          <Parameter Name="id_orden" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TotalFactura" ReturnType="Collection(Double)">
+          <Parameter Name="id_orden" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_FinalizarOrden">
+          <Parameter Name="id_orden" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AnularOrden">
+            <Parameter Name="idOrden" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_ConsultaPorIdentificacion_Result">
+          <Property Type="String" Name="Identificacion" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Rol" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="15" />
+        </ComplexType>
+        <Association Name="FK01_T_ORDENES_PLATOS__T_MENU">
+          <End Type="Proyecto_OCS_IngSoftware.T_MENU" Role="T_MENU" Multiplicity="1" />
+          <End Type="Proyecto_OCS_IngSoftware.T_ORDENES_PLATOS" Role="T_ORDENES_PLATOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_MENU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_ORDENES_PLATOS">
+              <PropertyRef Name="ID_PLATO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_ConsultarPlatoPorID_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DESCRIPCION" Nullable="false" MaxLength="200" />
+          <Property Type="Decimal" Name="PRECIO" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="ESTADO" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultarPlatos_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaMesas_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NumeroMesa" Nullable="false" />
+          <Property Type="Int32" Name="CantidadMaximaPersonas" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_consultaMesaPorID_Result">
+          <Property Type="Int32" Name="NumeroMesa" Nullable="false" />
+          <Property Type="Int32" Name="CantidadMaximaPersonas" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_ListadoPlatillosPendientes_Result">
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FECHA_CREACION" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_ListadodePlatillosPendientes_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FECHA_CREACION" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaMesasHabilitadas_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NumeroMesa" Nullable="false" />
+          <Property Type="Int32" Name="CantidadMaximaPersonas" Nullable="false" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultarPlatosHabilitados_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="T_TEMP_ORDENES">
+          <Key>
+            <PropertyRef Name="NUM_MESA" />
+            <PropertyRef Name="ID_PLATO" />
+            <PropertyRef Name="CANTIDAD" />
+          </Key>
+          <Property Name="NUM_MESA" Type="Int32" Nullable="false" />
+          <Property Name="ID_PLATO" Type="Int32" Nullable="false" />
+          <Property Name="ID_MESERO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CLIENTE_NOMBRE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CANTIDAD" Type="Int32" Nullable="false" />
+          <Property Name="observaciones" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="sp_PlatosTemporalesPorMesa_Result">
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaPlatosTempPorMesa_Result">
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CANTIDAD" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaPlatosTemporalesMesa_Result">
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="observaciones" Nullable="true" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="sp_ListadoComanda_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NUM_MESA" Nullable="false" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FECHA_CREACION" Nullable="false" Precision="23" />
+          <Property Type="String" Name="OBSERVACIONES" Nullable="true" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaMesasConOrdenes_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="NumeroMesa" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaPlatillosOrden_Result">
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="ESTADO" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="OBSERVACIONES" Nullable="true" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="sp_ConsultaPlatillosDeOrden_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="ESTADO" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="OBSERVACIONES" Nullable="true" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="sp_ValidaEstadoPlatosOrden_Result">
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="ESTADO" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="OBSERVACIONES" Nullable="true" MaxLength="1000" />
+        </ComplexType>
+        <ComplexType Name="sp_TotalesLineas_Result">
+          <Property Type="Double" Name="CANTIDAD" Nullable="false" />
+          <Property Type="String" Name="TITULO" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="total_linea" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Proyecto_OCS_IngSoftwareStoreContainer" CdmEntityContainer="Proyecto_OCS_IngSoftwareEntities">
+          <EntitySetMapping Name="T_MENU">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_MENU">
+              <MappingFragment StoreEntitySet="T_MENU">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+                <ScalarProperty Name="USUARIOREGISTRA" ColumnName="USUARIOREGISTRA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_MESAS">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_MESAS">
+              <MappingFragment StoreEntitySet="T_MESAS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+                <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_ORDENES">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_ORDENES">
+              <MappingFragment StoreEntitySet="T_ORDENES">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+                <ScalarProperty Name="ID_MESERO" ColumnName="ID_MESERO" />
+                <ScalarProperty Name="CLIENTE_NOMBRE" ColumnName="CLIENTE_NOMBRE" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_ORDENES_PLATOS">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_ORDENES_PLATOS">
+              <MappingFragment StoreEntitySet="T_ORDENES_PLATOS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_ORDEN" ColumnName="ID_ORDEN" />
+                <ScalarProperty Name="ID_PLATO" ColumnName="ID_PLATO" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="PRECIO_UNI" ColumnName="PRECIO_UNI" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_USUARIOS">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_USUARIOS">
+              <MappingFragment StoreEntitySet="T_USUARIOS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultaPorIdentificacion" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPorIdentificacion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPorIdentificacion_Result">
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GenerarNuevoPassword" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_GenerarNuevoPassword" />
+          <FunctionImportMapping FunctionImportName="sp_InsertarPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarPlato" />
+          <FunctionImportMapping FunctionImportName="sp_InsertarUsuario" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarUsuario" />
+          <FunctionImportMapping FunctionImportName="sp_ModificarEstadoUsuario" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoUsuario" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultarPlatoPorID" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatoPorID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatoPorID_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultarPlatos" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatos_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ModificarPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarPlato" />
+          <FunctionImportMapping FunctionImportName="sp_ModificarEstadoPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoPlato" />
+          <FunctionImportMapping FunctionImportName="sp_CrearMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_CrearMesa" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaMesas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesas_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+                <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ModificarEstadoMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoMesa" />
+          <FunctionImportMapping FunctionImportName="sp_consultaMesaPorID" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_consultaMesaPorID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_consultaMesaPorID_Result">
+                <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+                <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ActualizaOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ActualizaOrdenPlato" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaMesasHabilitadas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesasHabilitadas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesasHabilitadas_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+                <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultarPlatosHabilitados" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatosHabilitados">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatosHabilitados_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="T_TEMP_ORDENES">
+            <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_TEMP_ORDENES">
+              <MappingFragment StoreEntitySet="T_TEMP_ORDENES">
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="CLIENTE_NOMBRE" ColumnName="CLIENTE_NOMBRE" />
+                <ScalarProperty Name="ID_MESERO" ColumnName="ID_MESERO" />
+                <ScalarProperty Name="ID_PLATO" ColumnName="ID_PLATO" />
+                <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_InsertaRegistroTemporal" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertaRegistroTemporal" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaIDMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIDMesa" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaIDPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIDPlato" />
+          <FunctionImportMapping FunctionImportName="sp_EliminarRegTemp" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_EliminarRegTemp" />
+          <FunctionImportMapping FunctionImportName="sp_InsertarOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarOrden" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaIdOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIdOrden" />
+          <FunctionImportMapping FunctionImportName="sp_InsertaOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertaOrdenPlato" />
+          <FunctionImportMapping FunctionImportName="sp_ConsultaPlatosTemporalesMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPlatosTemporalesMesa">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPlatosTemporalesMesa_Result">
+                <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ListadoComanda" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ListadoComanda">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ListadoComanda_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultaMesasConOrdenes" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesasConOrdenes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesasConOrdenes_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ConsultaPlatillosDeOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPlatillosDeOrden">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPlatillosDeOrden_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_EliminarRegOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_EliminarRegOrdenPlato" />
+          <FunctionImportMapping FunctionImportName="sp_ValidaEstadoPlatosOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ValidaEstadoPlatosOrden">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ValidaEstadoPlatosOrden_Result">
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_AnularRegOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_AnularRegOrdenPlato" />
+          <FunctionImportMapping FunctionImportName="sp_TotalesLineas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_TotalesLineas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_TotalesLineas_Result">
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="total_linea" ColumnName="total_linea" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_TotalFactura" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_TotalFactura" />
+          <FunctionImportMapping FunctionImportName="sp_FinalizarOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_FinalizarOrden" />
+          <FunctionImportMapping FunctionImportName="sp_AnularOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_AnularOrden" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

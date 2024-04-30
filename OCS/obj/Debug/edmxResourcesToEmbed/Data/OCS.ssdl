@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Proyecto_OCS_IngSoftware.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="T_MENU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TITULO" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="PRECIO" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="ESTADO" Type="nvarchar" MaxLength="20" />
+    <Property Name="FECHA_CREACION" Type="datetime" />
+    <Property Name="USUARIOREGISTRA" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="T_MESAS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NumeroMesa" Type="int" Nullable="false" />
+    <Property Name="CantidadMaximaPersonas" Type="int" Nullable="false" />
+    <Property Name="Estado" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="FechaRegistro" Type="datetime" />
+    <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="T_ORDENES">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NUM_MESA" Type="int" Nullable="false" />
+    <Property Name="FECHA_CREACION" Type="datetime" Nullable="false" />
+    <Property Name="ID_MESERO" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="CLIENTE_NOMBRE" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ESTADO" Type="char" MaxLength="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="T_ORDENES_PLATOS">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ID_ORDEN" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID_ORDEN" Type="int" Nullable="false" />
+    <Property Name="ID_PLATO" Type="int" Nullable="false" />
+    <Property Name="FECHA_CREACION" Type="datetime" Nullable="false" />
+    <Property Name="OBSERVACIONES" Type="varchar" MaxLength="1000" />
+    <Property Name="CANTIDAD" Type="float" Nullable="false" />
+    <Property Name="PRECIO_UNI" Type="float" Nullable="false" />
+    <Property Name="PRECIO" Type="float" Nullable="false" />
+    <Property Name="ESTADO" Type="char" MaxLength="2" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Proyecto_OCS_IngSoftware.dbo.T_TEMP_ORDENES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="T_TEMP_ORDENES">
+    <Key>
+      <PropertyRef Name="NUM_MESA" />
+      <PropertyRef Name="ID_PLATO" />
+      <PropertyRef Name="CANTIDAD" />
+    </Key>
+    <Property Name="NUM_MESA" Type="int" Nullable="false" />
+    <Property Name="ID_PLATO" Type="int" Nullable="false" />
+    <Property Name="observaciones" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CANTIDAD" Type="int" Nullable="false" />
+    <Property Name="ID_MESERO" Type="varchar" MaxLength="20" />
+    <Property Name="CLIENTE_NOMBRE" Type="varchar" MaxLength="200" />
+    <Property Name="ESTADO" Type="char" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="T_USUARIOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Identificacion" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Celular" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Rol" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Estado" Type="nvarchar" MaxLength="20" />
+    <Property Name="FechaRegistro" Type="datetime" />
+    <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="100" />
+    <Property Name="Password" Type="varchar" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <Association Name="FK01_T_ORDENES_PLATOS__T_MENU">
+    <End Role="T_MENU" Type="Self.T_MENU" Multiplicity="1" />
+    <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="T_MENU">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="T_ORDENES_PLATOS">
+        <PropertyRef Name="ID_PLATO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK01_T_ORDENES_PLATOS__T_ORDENES">
+    <End Role="T_ORDENES" Type="Self.T_ORDENES" Multiplicity="1" />
+    <End Role="T_ORDENES_PLATOS" Type="Self.T_ORDENES_PLATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="T_ORDENES">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="T_ORDENES_PLATOS">
+        <PropertyRef Name="ID_ORDEN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_ActualizaOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_AnularOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idOrden" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_AnularRegOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idOrden" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaIDMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaIdOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaIDPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombrePlato" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_consultaMesaPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idMesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaMesas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_ConsultaMesasConOrdenes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_ConsultaMesasHabilitadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_ConsultaPlatillosDeOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="num_mesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaPlatosTemporalesMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultaPorIdentificacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="identificacion_persona" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultarPlatoPorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPlato" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ConsultarPlatos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_ConsultarPlatosHabilitados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_CrearMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="num_mesa" Type="int" Mode="In" />
+    <Parameter Name="Ln_cantidad_personas" Type="int" Mode="In" />
+    <Parameter Name="Lv_id_user" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_EliminarRegOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idReg" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_EliminarRegTemp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_FinalizarOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_orden" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_GenerarNuevoPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+    <Parameter Name="length" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_InsertaOrdenPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idOrden" Type="int" Mode="In" />
+    <Parameter Name="idPlato" Type="int" Mode="In" />
+    <Parameter Name="observaciones" Type="nvarchar" Mode="In" />
+    <Parameter Name="cant" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_InsertaRegistroTemporal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="num_mesa" Type="int" Mode="In" />
+    <Parameter Name="id_plato" Type="int" Mode="In" />
+    <Parameter Name="observaciones" Type="nvarchar" Mode="In" />
+    <Parameter Name="cant" Type="int" Mode="In" />
+    <Parameter Name="id_mesero" Type="nvarchar" Mode="In" />
+    <Parameter Name="cliente" Type="nvarchar" Mode="In" />
+    <Parameter Name="estado" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_InsertarOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+    <Parameter Name="mesero" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_InsertarPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="descripcion" Type="varchar" Mode="In" />
+    <Parameter Name="precio" Type="decimal" Mode="In" />
+    <Parameter Name="usuario_registra" Type="varchar" Mode="In" />
+    <Parameter Name="fechahoraregistro" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="sp_InsertarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+    <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+    <Parameter Name="celular" Type="nvarchar" Mode="In" />
+    <Parameter Name="email" Type="nvarchar" Mode="In" />
+    <Parameter Name="perfil" Type="nvarchar" Mode="In" />
+    <Parameter Name="usuario_registra" Type="nvarchar" Mode="In" />
+    <Parameter Name="fechahoraregistro" Type="datetime" Mode="In" />
+    <Parameter Name="length" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ListadoComanda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_ModificarEstadoMesa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idMesa" Type="int" Mode="In" />
+    <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_ModificarEstadoPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPlato" Type="int" Mode="In" />
+    <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_ModificarEstadoUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="identificacion" Type="nvarchar" Mode="In" />
+    <Parameter Name="estado_actual" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_ModificarPlato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_plato" Type="int" Mode="In" />
+    <Parameter Name="descripcion" Type="nvarchar" Mode="In" />
+    <Parameter Name="precio" Type="decimal" Mode="In" />
+  </Function>
+  <Function Name="sp_TotalesLineas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_orden" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_TotalFactura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_orden" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ValidaEstadoPlatosOrden" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="numMesa" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Proyecto_OCS_IngSoftwareStoreContainer">
+    <EntitySet Name="T_MENU" EntityType="Self.T_MENU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_MESAS" EntityType="Self.T_MESAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_ORDENES" EntityType="Self.T_ORDENES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_ORDENES_PLATOS" EntityType="Self.T_ORDENES_PLATOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_USUARIOS" EntityType="Self.T_USUARIOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="T_TEMP_ORDENES" EntityType="Self.T_TEMP_ORDENES" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [T_TEMP_ORDENES].[NUM_MESA] AS [NUM_MESA], 
+    [T_TEMP_ORDENES].[ID_PLATO] AS [ID_PLATO], 
+    [T_TEMP_ORDENES].[observaciones] AS [observaciones], 
+    [T_TEMP_ORDENES].[CANTIDAD] AS [CANTIDAD], 
+    [T_TEMP_ORDENES].[ID_MESERO] AS [ID_MESERO], 
+    [T_TEMP_ORDENES].[CLIENTE_NOMBRE] AS [CLIENTE_NOMBRE], 
+    [T_TEMP_ORDENES].[ESTADO] AS [ESTADO]
+    FROM [dbo].[T_TEMP_ORDENES] AS [T_TEMP_ORDENES]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_MENU" Association="Self.FK01_T_ORDENES_PLATOS__T_MENU">
+      <End Role="T_MENU" EntitySet="T_MENU" />
+      <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK01_T_ORDENES_PLATOS__T_ORDENES" Association="Self.FK01_T_ORDENES_PLATOS__T_ORDENES">
+      <End Role="T_ORDENES" EntitySet="T_ORDENES" />
+      <End Role="T_ORDENES_PLATOS" EntitySet="T_ORDENES_PLATOS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

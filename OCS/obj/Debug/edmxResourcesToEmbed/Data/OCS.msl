@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Proyecto_OCS_IngSoftwareStoreContainer" CdmEntityContainer="Proyecto_OCS_IngSoftwareEntities">
+    <EntitySetMapping Name="T_MENU">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_MENU">
+        <MappingFragment StoreEntitySet="T_MENU">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+          <ScalarProperty Name="USUARIOREGISTRA" ColumnName="USUARIOREGISTRA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_MESAS">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_MESAS">
+        <MappingFragment StoreEntitySet="T_MESAS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+          <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+          <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_ORDENES">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_ORDENES">
+        <MappingFragment StoreEntitySet="T_ORDENES">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+          <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+          <ScalarProperty Name="ID_MESERO" ColumnName="ID_MESERO" />
+          <ScalarProperty Name="CLIENTE_NOMBRE" ColumnName="CLIENTE_NOMBRE" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_ORDENES_PLATOS">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_ORDENES_PLATOS">
+        <MappingFragment StoreEntitySet="T_ORDENES_PLATOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ID_ORDEN" ColumnName="ID_ORDEN" />
+          <ScalarProperty Name="ID_PLATO" ColumnName="ID_PLATO" />
+          <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+          <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="PRECIO_UNI" ColumnName="PRECIO_UNI" />
+          <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_USUARIOS">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_USUARIOS">
+        <MappingFragment StoreEntitySet="T_USUARIOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+          <ScalarProperty Name="Celular" ColumnName="Celular" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Rol" ColumnName="Rol" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+          <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_ConsultaPorIdentificacion" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPorIdentificacion">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPorIdentificacion_Result">
+          <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Rol" ColumnName="Rol" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_GenerarNuevoPassword" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_GenerarNuevoPassword" />
+    <FunctionImportMapping FunctionImportName="sp_InsertarPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarPlato" />
+    <FunctionImportMapping FunctionImportName="sp_InsertarUsuario" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarUsuario" />
+    <FunctionImportMapping FunctionImportName="sp_ModificarEstadoUsuario" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoUsuario" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultarPlatoPorID" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatoPorID">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatoPorID_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ConsultarPlatos" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatos_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ModificarPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarPlato" />
+    <FunctionImportMapping FunctionImportName="sp_ModificarEstadoPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoPlato" />
+    <FunctionImportMapping FunctionImportName="sp_CrearMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_CrearMesa" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaMesas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesas_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+          <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ModificarEstadoMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ModificarEstadoMesa" />
+    <FunctionImportMapping FunctionImportName="sp_consultaMesaPorID" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_consultaMesaPorID">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_consultaMesaPorID_Result">
+          <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+          <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ActualizaOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ActualizaOrdenPlato" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaMesasHabilitadas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesasHabilitadas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesasHabilitadas_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+          <ScalarProperty Name="CantidadMaximaPersonas" ColumnName="CantidadMaximaPersonas" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ConsultarPlatosHabilitados" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultarPlatosHabilitados">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultarPlatosHabilitados_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="T_TEMP_ORDENES">
+      <EntityTypeMapping TypeName="Proyecto_OCS_IngSoftware.T_TEMP_ORDENES">
+        <MappingFragment StoreEntitySet="T_TEMP_ORDENES">
+          <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="CLIENTE_NOMBRE" ColumnName="CLIENTE_NOMBRE" />
+          <ScalarProperty Name="ID_MESERO" ColumnName="ID_MESERO" />
+          <ScalarProperty Name="ID_PLATO" ColumnName="ID_PLATO" />
+          <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_InsertaRegistroTemporal" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertaRegistroTemporal" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaIDMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIDMesa" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaIDPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIDPlato" />
+    <FunctionImportMapping FunctionImportName="sp_EliminarRegTemp" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_EliminarRegTemp" />
+    <FunctionImportMapping FunctionImportName="sp_InsertarOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertarOrden" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaIdOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaIdOrden" />
+    <FunctionImportMapping FunctionImportName="sp_InsertaOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_InsertaOrdenPlato" />
+    <FunctionImportMapping FunctionImportName="sp_ConsultaPlatosTemporalesMesa" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPlatosTemporalesMesa">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPlatosTemporalesMesa_Result">
+          <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ListadoComanda" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ListadoComanda">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ListadoComanda_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NUM_MESA" ColumnName="NUM_MESA" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+          <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ConsultaMesasConOrdenes" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaMesasConOrdenes">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaMesasConOrdenes_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NumeroMesa" ColumnName="NumeroMesa" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ConsultaPlatillosDeOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ConsultaPlatillosDeOrden">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ConsultaPlatillosDeOrden_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_EliminarRegOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_EliminarRegOrdenPlato" />
+    <FunctionImportMapping FunctionImportName="sp_ValidaEstadoPlatosOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_ValidaEstadoPlatosOrden">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_ValidaEstadoPlatosOrden_Result">
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_AnularRegOrdenPlato" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_AnularRegOrdenPlato" />
+    <FunctionImportMapping FunctionImportName="sp_TotalesLineas" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_TotalesLineas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Proyecto_OCS_IngSoftware.sp_TotalesLineas_Result">
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="total_linea" ColumnName="total_linea" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_TotalFactura" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_TotalFactura" />
+    <FunctionImportMapping FunctionImportName="sp_FinalizarOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_FinalizarOrden" />
+    <FunctionImportMapping FunctionImportName="sp_AnularOrden" FunctionName="Proyecto_OCS_IngSoftware.Store.sp_AnularOrden" />
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ff3636c1a80e4656b6e997ef722cbfb2" Name="Diagram1">
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_MENU" Width="2.875" PointX="6.125" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_MESAS" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_ORDENES" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_ORDENES_PLATOS" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_USUARIOS" Width="1.5" PointX="6.25" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="Proyecto_OCS_IngSoftware.FK02_T_ORDENES_PLATOS__T_MESAS" ManuallyRouted="false" />
+        <AssociationConnector Association="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_ORDENES" ManuallyRouted="false" />
+        <AssociationConnector Association="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_MESEROS" ManuallyRouted="false" />
+        <AssociationConnector Association="Proyecto_OCS_IngSoftware.FK01_T_ORDENES_PLATOS__T_MENU" />
+        <EntityTypeShape EntityType="Proyecto_OCS_IngSoftware.T_TEMP_ORDENES" Width="1.875" PointX="3.375" PointY="6" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

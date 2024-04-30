@@ -1,0 +1,163 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="OCS.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Mi aplicación ASP.NET</title>
+   
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <style>
+        .btnEnviar{
+            background-color:yellowgreen;
+            font-weight:bold;
+            height:35px;
+            width:125px;
+        }
+
+        .btnCancelar{
+            
+            font-weight:bold;
+            height:35px;
+            width:125px;
+        }
+
+        .gridview-header-cell {
+           
+            text-align:center;
+         /* Puedes ajustar el valor del margen según tus necesidades */
+}
+
+        .centrado {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+ 
+        }
+        
+        .btn-primary{
+            background-color: #0A2F3F;
+            border-color: #003B95;
+            border-radius: 25px;
+           
+            font-size:large;
+            font-family: Calibri;   
+            color:#ffffff;
+        }
+
+        .btn-primary:hover{
+            border-color: #0A2F3F;
+            border-radius: 25px;
+            background-color: #ffffff;
+            color:#0A2F3F;
+        }
+
+        .info_usu{
+            text-align:right;
+        }
+
+        .labels_form{
+            text-align:right;
+            text-align:initial;
+            
+        }
+
+        .cu{
+            width: 475px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align:left;
+        }
+
+        .cu2{
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align:left;
+        }
+
+        .alignl{
+            text-align:left;
+        }
+    </style>
+
+</head>
+<body>
+   
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" style=" height:75px; background:linear-gradient(to right,#07222E,#0A2F3F,#1B698C,#2693C4)">
+            <div class="container">
+                
+                <a class="navbar-brand" style="-webkit-text-stroke:0.8px black; text-shadow:2px 2px 0 #000; color:white; font-size:40px; font-weight: bold; padding-top:25px; font-family:'Agency FB'" runat="server">Order Control System</a>
+                <div class="navbar-header">
+                    <%--
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                         --%>
+                    
+                </div>
+               
+                <%--
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/">Inicio</a></li>
+                        <li><a runat="server" href="~/About">Acerca de</a></li>
+                        <li><a runat="server" href="~/Contact">Contacto</a></li>
+                    </ul>
+                </div>
+                --%>
+                <div class="info_usu" style="padding-top:18px">
+
+                    <asp:Label ID="lblUsuario" runat="server" Text="" ForeColor="white" ></asp:Label>
+                    <br />
+                    <asp:LinkButton ID="btnCerrar" Text="Cerrar sesión" Visible="false" CausesValidation="false" runat="server" ForeColor="White" OnClick="btnCerrar_Click" ></asp:LinkButton>
+                    <%-- <asp:Button ID="btncerrar" Text="Cerrar sesión" runat="server" Visible="false" class="btn btn-primary btn col-3 mx-auto" CausesValidation="false" />--%>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container body-content" style="text-align:center" >
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer style="text-align:center" >
+                <p>&copy; <%: DateTime.Now.Year %> - by InspireTech Future Lab</p>
+            </footer>
+        </div>
+
+    </form>
+</body>
+</html>
